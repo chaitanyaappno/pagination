@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Post from "./Post";
+import Pagination from "./Pagination";
+import "./App.css";
 
 function App() {
+  const url = "https://jsonplaceholder.typicode.com/posts";
+
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => setPosts(data))
+      .catch((error) => setError(error.message));
+  }, []);
+  if (error) return <h1>{error}</h1>;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="card-container">
+        {posts.length > 0 && (
+          <Pagination
+            RenderComponent={Post}
+            data={posts}
+            title="Posts"
+            pageLimit={5}
+            dataLimit={10}
+          />
+        )}
+      </div>
     </div>
   );
 }
