@@ -16,6 +16,7 @@ function App() {
       .catch((error) => setError(error.message));
   }, []);
   if (error) return <h1>{error}</h1>;
+  
   return (
     <div className="App">
       <div className="card-container">
