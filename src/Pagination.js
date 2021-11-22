@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Pagination.css";
 
-const Pagination = ({
-  data,
-  RenderComponent,
-  title,
-  pageLimit,
-  dataLimit,
-  children,
-}) => {
+const Pagination = ({ data, RenderComponent, title, pageLimit, dataLimit }) => {
   const [pages] = useState(Math.round(data.length / dataLimit));
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   function goToNextPage() {
     // not yet implemented
@@ -40,7 +37,7 @@ const Pagination = ({
   };
 
   return (
-    <div>
+    <div className="pagination-container">
       <div className="data-container">
         {getPaginatedData().map((d, index) => (
           <RenderComponent posts={d} key={index} />
@@ -55,7 +52,13 @@ const Pagination = ({
         </button>
 
         {getPaginationGroup().map((item, index) => (
-          <button key={index} onClick={changePage} className={`paginationItem ${currentPage === item ? 'active' : null}`}>
+          <button
+            key={index}
+            onClick={changePage}
+            className={`paginationItem ${
+              currentPage === item ? "active" : null
+            }`}
+          >
             {item}
           </button>
         ))}
